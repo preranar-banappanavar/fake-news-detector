@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fake News Detector</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <div class="noise"></div>
+
+  <header>
+    <div class="masthead">
+      <span class="masthead-tag">AI-POWERED</span>
+      <h1 class="masthead-title">FAKE NEWS<br><span>DETECTOR</span></h1>
+      <span class="masthead-tag">TRUTH ENGINE v1.0</span>
+    </div>
+    <div class="ticker-wrap">
+      <div class="ticker">
+        ANALYZING MISINFORMATION &nbsp;·&nbsp; SEPARATING FACT FROM FICTION &nbsp;·&nbsp;
+        POWERED BY MACHINE LEARNING &nbsp;·&nbsp; THINK CRITICALLY &nbsp;·&nbsp;
+        VERIFY BEFORE YOU SHARE &nbsp;·&nbsp; ANALYZING MISINFORMATION &nbsp;·&nbsp;
+        SEPARATING FACT FROM FICTION &nbsp;·&nbsp; POWERED BY MACHINE LEARNING &nbsp;·&nbsp;
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="input-section">
+      <div class="section-label">// INPUT ARTICLE OR HEADLINE</div>
+      <div class="textarea-wrap">
+        <textarea id="newsText" placeholder="Paste a news headline or article text here…" rows="7"></textarea>
+        <div class="char-count"><span id="charCount">0</span> characters</div>
+      </div>
+      <div class="actions">
+        <button id="analyzeBtn" onclick="analyzeNews()">
+          <span class="btn-label">ANALYZE</span>
+          <span class="btn-arrow">→</span>
+        </button>
+        <button id="clearBtn" onclick="clearAll()">CLEAR</button>
+      </div>
+    </section>
+
+    <section class="result-section" id="resultSection">
+      <div class="section-label">// ANALYSIS RESULT</div>
+
+      <div class="verdict-card" id="verdictCard">
+        <div class="verdict-header">
+          <span class="verdict-icon" id="verdictIcon"></span>
+          <span class="verdict-label" id="verdictLabel">—</span>
+        </div>
+        <div class="verdict-confidence" id="verdictConf">—</div>
+      </div>
+
+      <div class="meter-block">
+        <div class="meter-row">
+          <span class="meter-tag">FAKE</span>
+          <div class="meter-bar">
+            <div class="meter-fill fake-fill" id="fakeFill"></div>
+          </div>
+          <span class="meter-val" id="fakeVal">—</span>
+        </div>
+        <div class="meter-row">
+          <span class="meter-tag">REAL</span>
+          <div class="meter-bar">
+            <div class="meter-fill real-fill" id="realFill"></div>
+          </div>
+          <span class="meter-val" id="realVal">—</span>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        ⚠ This tool uses a lightweight ML model for demonstration. Always verify news with
+        trusted primary sources and apply your own critical thinking.
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>FAKE NEWS DETECTOR</span>
+    <span>BUILT WITH FASTAPI + SKLEARN</span>
+    <span>© 2024</span>
+  </footer>
+
+  <div id="loader" class="loader hidden">
+    <div class="loader-inner">
+      <div class="loader-bar"></div>
+      <p>SCANNING ARTICLE<span class="dots">...</span></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
