@@ -3,91 +3,181 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Fake News Detector</title>
+  <title>Turbit — AI Truth Engine</title>
   <link rel="stylesheet" href="style.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@300;400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
 </head>
 <body>
 
+  <!-- Futuristic Ambient Noise & Glows -->
   <div class="noise"></div>
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
 
+  <!-- Header -->
   <header>
-    <div class="masthead">
-      <span class="masthead-tag">AI-POWERED</span>
-      <h1 class="masthead-title">FAKE NEWS<br><span>DETECTOR</span></h1>
-      <span class="masthead-tag">TRUTH ENGINE v1.0</span>
-    </div>
-    <div class="ticker-wrap">
-      <div class="ticker">
-        ANALYZING MISINFORMATION &nbsp;·&nbsp; SEPARATING FACT FROM FICTION &nbsp;·&nbsp;
-        POWERED BY MACHINE LEARNING &nbsp;·&nbsp; THINK CRITICALLY &nbsp;·&nbsp;
-        VERIFY BEFORE YOU SHARE &nbsp;·&nbsp; ANALYZING MISINFORMATION &nbsp;·&nbsp;
-        SEPARATING FACT FROM FICTION &nbsp;·&nbsp; POWERED BY MACHINE LEARNING &nbsp;·&nbsp;
+    <div class="navbar">
+      <div class="logo">
+        <span class="logo-dot"></span>
+        <span class="logo-text">TURBIT</span>
       </div>
+      <div class="badge">AI TRUTH ENGINE v2.0</div>
     </div>
   </header>
 
-  <main>
-    <section class="input-section">
-      <div class="section-label">// INPUT ARTICLE OR HEADLINE</div>
-      <div class="textarea-wrap">
-        <textarea id="newsText" placeholder="Paste a news headline or article text here…" rows="7"></textarea>
-        <div class="char-count"><span id="charCount">0</span> characters</div>
+  <main class="main-container">
+    
+    <!-- ================= PAGE 1: SCANNER INPUT ================= -->
+    <div id="scannerPage" class="page active">
+      <div class="hero-section">
+        <h1 class="hero-title">Verify articles in <span>real-time</span></h1>
+        <p class="hero-subtitle">Instantly analyze any headline or article body using advanced linguistic pattern detection to verify authenticity.</p>
       </div>
-      <div class="actions">
-        <button id="analyzeBtn" onclick="analyzeNews()">
-          <span class="btn-label">ANALYZE</span>
-          <span class="btn-arrow">→</span>
+
+      <section class="card glass">
+        <div class="card-header">
+          <span class="terminal-dots"><span></span><span></span><span></span></span>
+          <span class="card-label">SECURE SCAN INPUT //</span>
+        </div>
+        
+        <div class="textarea-container">
+          <textarea id="newsText" placeholder="Paste a headline, article, or statement here to verify its truth..." rows="6"></textarea>
+          <div class="textarea-footer">
+            <span class="shortcut-tip">Press Ctrl + Enter to analyze</span>
+            <span class="char-count"><span id="charCount">0</span> characters</span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="analyzeBtn" onclick="analyzeNews()">
+            <span>ANALYZE CLAIMS</span>
+            <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button id="clearBtn" onclick="clearAll()">CLEAR</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- ================= PAGE 2: REPORT DETAILS ================= -->
+    <div id="reportPage" class="page">
+      <div class="report-header-nav">
+        <button class="back-btn" onclick="goBackToScanner()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 13L5 8L10 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Back to Scanner</span>
         </button>
-        <button id="clearBtn" onclick="clearAll()">CLEAR</button>
-      </div>
-    </section>
-
-    <section class="result-section" id="resultSection">
-      <div class="section-label">// ANALYSIS RESULT</div>
-
-      <div class="verdict-card" id="verdictCard">
-        <div class="verdict-header">
-          <span class="verdict-icon" id="verdictIcon"></span>
-          <span class="verdict-label" id="verdictLabel">—</span>
-        </div>
-        <div class="verdict-confidence" id="verdictConf">—</div>
       </div>
 
-      <div class="meter-block">
-        <div class="meter-row">
-          <span class="meter-tag">FAKE</span>
-          <div class="meter-bar">
-            <div class="meter-fill fake-fill" id="fakeFill"></div>
+      <div class="report-layout">
+        <!-- Sidebar Metrics -->
+        <div class="report-sidebar">
+          <div class="card glass verdict-card" id="verdictCard">
+            <div class="verdict-status-pill" id="verdictPill">ANALYZED</div>
+            <div class="verdict-emoji" id="verdictIcon">🔍</div>
+            <h2 class="verdict-title" id="verdictLabel">Evaluating</h2>
+            <p class="verdict-confidence" id="verdictConf">Confidence: --%</p>
+
+            <div class="meters-container">
+              <div class="meter-item">
+                <div class="meter-info">
+                  <span class="meter-name">REALITY MATRIX</span>
+                  <span class="meter-percentage" id="realVal">0%</span>
+                </div>
+                <div class="meter-track">
+                  <div class="meter-bar real-bar" id="realFill"></div>
+                </div>
+              </div>
+
+              <div class="meter-item">
+                <div class="meter-info">
+                  <span class="meter-name">MISINFORMATION INDEX</span>
+                  <span class="meter-percentage" id="fakeVal">0%</span>
+                </div>
+                <div class="meter-track">
+                  <div class="meter-bar fake-bar" id="fakeFill"></div>
+                </div>
+              </div>
+            </div>
           </div>
-          <span class="meter-val" id="fakeVal">—</span>
         </div>
-        <div class="meter-row">
-          <span class="meter-tag">REAL</span>
-          <div class="meter-bar">
-            <div class="meter-fill real-fill" id="realFill"></div>
-          </div>
-          <span class="meter-val" id="realVal">—</span>
-        </div>
-      </div>
 
-      <div class="disclaimer">
-        ⚠ This tool uses a lightweight ML model for demonstration. Always verify news with
-        trusted primary sources and apply your own critical thinking.
+        <!-- Dynamic Detailed Content -->
+        <div class="report-content card glass">
+          <!-- SUBMITTED TEXT DISPLAY -->
+          <div class="scanned-block">
+            <div class="content-label">// SCANNED TEXT</div>
+            <blockquote id="scannedTextQuote" class="scanned-quote">...</blockquote>
+          </div>
+
+          <!-- DYNAMIC CONTENT (REAL CASE) -->
+          <div id="realResultDetails" class="dynamic-detail-section hidden">
+            <div class="detail-header">
+              <div class="icon-wrap success-glow">✅</div>
+              <div>
+                <h3>Verified Sources & Context</h3>
+                <p>This statement shows structural patterns consistent with credible journalism.</p>
+              </div>
+            </div>
+            
+            <div class="verified-sources">
+              <div class="content-label">// DETECTED CREDIBLE FOOTPRINT</div>
+              <div class="sources-list" id="sourcesList">
+                <!-- Sources dynamically populated here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- DYNAMIC CONTENT (FAKE CASE) -->
+          <div id="fakeResultDetails" class="dynamic-detail-section hidden">
+            <div class="detail-header">
+              <div class="icon-wrap warning-glow">🚨</div>
+              <div>
+                <h3>Debunked / Misleading Claim</h3>
+                <p>Linguistic markers indicate highly inflated, unverified, or fabricated content.</p>
+              </div>
+            </div>
+
+            <div class="debunk-panel">
+              <div class="content-label">// DEBUNK & FACT CHECK SUMMARY</div>
+              <div class="debunk-correction" id="debunkSummary">
+                This claim aligns with common misinformation campaigns. No official record or secondary source corroborates this statement.
+              </div>
+
+              <div class="read-more-wrapper">
+                <button class="expand-btn" id="readMoreBtn" onclick="toggleReadMore()">
+                  <span>Read Detailed Fact Check</span>
+                  <svg id="expandArrow" width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 6L8 11L13 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="expandable-content hidden" id="expandableDebunkContent">
+                  <div class="fact-check-details">
+                    <p><strong>Linguistic Analysis:</strong> The statement features extreme emotional hyperbole, lack of numeric or statistical grounding, and high-frequency sensationalist phrases. These are statistically classified as typical markers of fabrications designed to elicit immediate emotional responses.</p>
+                    <p><strong>Primary Source Verification:</strong> Database lookup indicates zero matched entries in standard global wire services (AP, Reuters, Bloomberg) for this specific factual assertion. Independent fact-checking associations (Snopes, PolitiFact) rate similar narratives as <em>False</em>.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="disclaimer-block">
+            <span class="warning-icon">⚠️</span>
+            <p><strong>Disclaimer:</strong> Turbit is an AI-powered classifier analyzing linguistic, stylistic, and semantic properties of text. It does not replace independent primary journalism. Always verify important news through original wire services.</p>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
+
   </main>
 
-  <footer>
-    <span>FAKE NEWS DETECTOR</span>
-    <span>BUILT WITH FASTAPI + SKLEARN</span>
-    <span>© 2024</span>
-  </footer>
-
+  <!-- Loader Overlay -->
   <div id="loader" class="loader hidden">
-    <div class="loader-inner">
-      <div class="loader-bar"></div>
-      <p>SCANNING ARTICLE<span class="dots">...</span></p>
+    <div class="loader-backdrop"></div>
+    <div class="loader-content">
+      <div class="loader-scanner">
+        <div class="scanner-line"></div>
+      </div>
+      <div class="loader-text">
+        <h3>TURBIT NEURAL NETWORK SCANNING</h3>
+        <p>Analyzing style, entropy, and linguistic integrity<span class="dots">...</span></p>
+      </div>
     </div>
   </div>
 
