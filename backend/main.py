@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from model import predict
 import os
 
+# Turbit API entrypoint
 app = FastAPI(title="Fake News Detector API")
 
 app.add_middleware(
