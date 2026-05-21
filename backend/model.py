@@ -154,7 +154,7 @@ def _get_dataframe() -> pd.DataFrame:
 def _build_pipeline() -> Pipeline:
     return Pipeline([
         ("tfidf", TfidfVectorizer(
-            max_features=100_000,
+            max_features=10_000,
             ngram_range=(1, 2),
             sublinear_tf=True,
             min_df=2,
