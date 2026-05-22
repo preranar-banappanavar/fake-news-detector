@@ -9,6 +9,7 @@ textarea.addEventListener("input", () => {
 });
 
 // ── Analyze ──────────────────────────────────────────────────
+// ── Analyze ──────────────────────────────────────────────────
 async function analyzeNews() {
   const text = textarea.value.trim();
 
@@ -30,8 +31,14 @@ async function analyzeNews() {
 
     const data = await res.json();
     renderResult(data);
+    
+    // Transition to results page view
+    document.getElementById("homeView").classList.add("hidden");
+    document.getElementById("resultView").classList.remove("hidden");
   } catch (err) {
     showError(err.message);
+    document.getElementById("homeView").classList.add("hidden");
+    document.getElementById("resultView").classList.remove("hidden");
   } finally {
     showLoader(false);
   }
@@ -142,6 +149,99 @@ function clearAll() {
   if (coverageSection) {
     coverageSection.classList.add("hidden");
   }
+}
+
+// ── Tab Management ───────────────────────────────────────────
+const MOCK_NEWS = [
+  {
+    category: "technology",
+    title: "Scientists develop new solid-state battery technology with 10x energy density of current lithium batteries",
+    content: "Researchers at the joint energy labs have developed a silicon-based solid-state battery that stores up to 10 times the charge of current lithium-ion cells while maintaining safe operating temperatures."
+  },
+  {
+    category: "world",
+    title: "NASA intercepts radio signals originating from nearby Star System Proxima Centauri",
+    content: "Reports claim NASA telescopes detected a rhythmic, non-natural frequency signal coming from the habitable zone of Proxima Centauri, sparking debates about possible signs of extraterrestrial civilization."
+  },
+  {
+    category: "finance",
+    title: "Global Central Banks coordinate massive policy shift to stabilize cross-border digital assets",
+    content: "In an emergency summit, central bank governors announced a unified regulatory framework to manage cross-border digital currencies, aiming to combat inflation and maintain fiat system stability."
+  },
+  {
+    category: "science",
+    title: "Genetic breakthrough allows plants to glow in the dark and replace city streetlights",
+    content: "A biotechnology startup successfully cross-bred bioluminescent marine algae genes into common maple and oak trees, creating glowing leaves bright enough to illuminate pedestrian pathways."
+  },
+  {
+    category: "space",
+    title: "Private space firm successfully launches first manned commercial orbital habitat station",
+    content: "A commercial aerospace corporation successfully deployed its manned module in low Earth orbit, accommodating four private researchers in a self-sustaining environment."
+  },
+  {
+    category: "environment",
+    title: "Deep ocean kelp forests found absorbing 50 times more carbon dioxide than Amazon rainforest",
+    content: "Marine biologists mapping the southern ocean discovered massive underwater kelp forests that sequestrate carbon at a rate far exceeding any known terrestrial ecosystem."
+  }
+];
+
+function switchTab(tabId) {
+  // Hide all views
+  document.querySelectorAll(".tab-view").forEach(view => {
+    view.classList.add("hidden");
+  });
+  
+  // Deactivate all tab links
+  document.querySelectorAll(".tab-link").forEach(link => {
+    link.classList.remove("active");
+  });
+  
+  // Show target view
+  const targetView = document.getElementById(`${tabId}View`);
+  if (targetView) targetView.classList.remove("hidden");
+  
+  // Activate clicked tab link
+  const activeLink = document.querySelector(`.tab-link[onclick="switchTab('${tabId}')"]`);
+  if (activeLink) activeLink.classList.add("active");
+  
+  // Populate Latest News if active
+  if (tabId === "news") {
+    populateLatestNews();
+  }
+}
+
+function populateLatestNews() {
+  const grid = document.getElementById("newsGrid");
+  if (!grid) return;
+  
+  grid.innerHTML = "";
+  MOCK_NEWS.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "news-card";
+    card.onclick = () => sendToScanner(item.title + "\n\n" + item.content);
+    
+    card.innerHTML = `
+      <div>
+        <div class="news-card-tag">// ${item.category}</div>
+        <h3 class="news-card-title">${item.title}</h3>
+      </div>
+      <div class="news-card-action">SEND TO SCANNER →</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function sendToScanner(text) {
+  textarea.value = text;
+  charCount.textContent = text.length;
+  switchTab("home");
+  analyzeNews();
+}
+
+function backToHome() {
+  document.getElementById("resultView").classList.add("hidden");
+  document.getElementById("homeView").classList.remove("hidden");
+  clearAll();
 }
 
 // ── Loader ───────────────────────────────────────────────────

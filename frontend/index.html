@@ -3,99 +3,126 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Turbit — AI Truth Engine</title>
+  <title>Truth Engine — Minimalist News Verification</title>
   <link rel="stylesheet" href="style.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet"/>
 </head>
 <body>
 
-  <div class="noise"></div>
-
   <header>
     <div class="masthead">
-      <span class="masthead-tag">AI-POWERED</span>
-      <h1 class="masthead-title">TURBIT<br><span>TRUTH ENGINE</span></h1>
-      <span class="masthead-tag">TRUTH ENGINE v1.0</span>
+      <h1 class="masthead-title">TRUTH ENGINE</h1>
     </div>
-    <div class="ticker-wrap">
-      <div class="ticker">
-        ANALYZING MISINFORMATION &nbsp;·&nbsp; SEPARATING FACT FROM FICTION &nbsp;·&nbsp;
-        POWERED BY MACHINE LEARNING &nbsp;·&nbsp; THINK CRITICALLY &nbsp;·&nbsp;
-        VERIFY BEFORE YOU SHARE &nbsp;·&nbsp; ANALYZING MISINFORMATION &nbsp;·&nbsp;
-        SEPARATING FACT FROM FICTION &nbsp;·&nbsp; POWERED BY MACHINE LEARNING &nbsp;·&nbsp;
-      </div>
-    </div>
+    <nav class="nav-tabs">
+      <button class="tab-link active" onclick="switchTab('home')">HOME</button>
+      <button class="tab-link" onclick="switchTab('news')">LATEST NEWS</button>
+      <button class="tab-link" onclick="switchTab('about')">ABOUT</button>
+    </nav>
   </header>
 
   <main>
-    <section class="input-section">
-      <div class="section-label">// INPUT ARTICLE OR HEADLINE</div>
-      <div class="textarea-wrap">
-        <textarea id="newsText" placeholder="Paste a news headline or article text here…" rows="7"></textarea>
-        <div class="char-count"><span id="charCount">0</span> characters</div>
-      </div>
-      <div class="actions">
-        <button id="analyzeBtn" onclick="analyzeNews()">
-          <span class="btn-label">ANALYZE</span>
-          <span class="btn-arrow">→</span>
-        </button>
-        <button id="clearBtn" onclick="clearAll()">CLEAR</button>
-      </div>
-    </section>
-
-    <section class="result-section" id="resultSection">
-      <div class="section-label">// ANALYSIS RESULT</div>
-
-      <div class="verdict-card" id="verdictCard">
-        <div class="verdict-header">
-          <span class="verdict-icon" id="verdictIcon"></span>
-          <span class="verdict-label" id="verdictLabel">—</span>
+    <!-- Home Tab View -->
+    <div id="homeView" class="tab-view active">
+      <section class="input-section">
+        <div class="textarea-wrap">
+          <textarea id="newsText" placeholder="Paste a headline or news article here to scan for truth…" rows="7"></textarea>
+          <div class="char-count"><span id="charCount">0</span> characters</div>
         </div>
-        <div class="verdict-confidence" id="verdictConf">—</div>
-      </div>
+        <div class="actions">
+          <button id="analyzeBtn" onclick="analyzeNews()">
+            <span class="btn-label">ANALYZE</span>
+            <span class="btn-arrow">→</span>
+          </button>
+          <button id="clearBtn" onclick="clearAll()">CLEAR</button>
+        </div>
+      </section>
+    </div>
 
-      <div class="meter-block">
-        <div class="meter-row">
-          <span class="meter-tag">FAKE</span>
-          <div class="meter-bar">
-            <div class="meter-fill fake-fill" id="fakeFill"></div>
+    <!-- Results View (Scanner Page) -->
+    <div id="resultView" class="tab-view hidden">
+      <section class="result-section" id="resultSection">
+        <div class="verdict-card" id="verdictCard">
+          <div class="verdict-header">
+            <span class="verdict-icon" id="verdictIcon"></span>
+            <span class="verdict-label" id="verdictLabel">—</span>
           </div>
-          <span class="meter-val" id="fakeVal">—</span>
+          <div class="verdict-confidence" id="verdictConf">—</div>
         </div>
-        <div class="meter-row">
-          <span class="meter-tag">REAL</span>
-          <div class="meter-bar">
-            <div class="meter-fill real-fill" id="realFill"></div>
+  
+        <div class="meter-block">
+          <div class="meter-row">
+            <span class="meter-tag">FAKE</span>
+            <div class="meter-bar">
+              <div class="meter-fill fake-fill" id="fakeFill"></div>
+            </div>
+            <span class="meter-val" id="fakeVal">—</span>
           </div>
-          <span class="meter-val" id="realVal">—</span>
+          <div class="meter-row">
+            <span class="meter-tag">REAL</span>
+            <div class="meter-bar">
+              <div class="meter-fill real-fill" id="realFill"></div>
+            </div>
+            <span class="meter-val" id="realVal">—</span>
+          </div>
         </div>
-      </div>
-      
-      <div class="coverage-section hidden" id="coverageSection">
-        <div class="section-label">// FULL COVERAGE</div>
-        <div class="coverage-card">
-          <p id="coverageInfo">Read full coverage and verify references on official wire feeds.</p>
-          <a id="coverageLink" href="#" target="_blank" class="coverage-btn">READ COMPLETE NEWS →</a>
+        
+        <div class="coverage-section hidden" id="coverageSection">
+          <div class="coverage-card">
+            <p id="coverageInfo">Read full coverage and verify references on official wire feeds.</p>
+            <a id="coverageLink" href="#" target="_blank" class="coverage-btn">READ COMPLETE NEWS →</a>
+          </div>
         </div>
-      </div>
 
-      <div class="disclaimer">
-        ⚠ This tool uses a lightweight ML model for demonstration. Always verify news with
-        trusted primary sources and apply your own critical thinking.
-      </div>
-    </section>
+        <div class="actions result-actions">
+          <button id="backBtn" onclick="backToHome()">← SCAN ANOTHER ARTICLE</button>
+        </div>
+  
+        <div class="disclaimer">
+          This tool uses a machine learning model for demonstration. Always verify news with trusted primary sources.
+        </div>
+      </section>
+    </div>
+
+    <!-- Latest News Tab View -->
+    <div id="newsView" class="tab-view hidden">
+      <section class="news-feed-section">
+        <div class="news-grid" id="newsGrid">
+          <!-- Dynamic news cards populated by JS -->
+        </div>
+      </section>
+    </div>
+
+    <!-- About Tab View -->
+    <div id="aboutView" class="tab-view hidden">
+      <section class="about-section">
+        <div class="about-grid">
+          <div class="about-card">
+            <h3>ABOUT</h3>
+            <p>Truth Engine is an AI-powered platform designed to analyze news headlines and article bodies, identifying subtle patterns of misinformation using custom machine learning algorithms.</p>
+          </div>
+          <div class="about-card">
+            <h3>TECHNOLOGY</h3>
+            <p>Built using a FastAPI backend and a Scikit-Learn classification pipeline trained on a 20,000 subset of the verified WELFake dataset.</p>
+          </div>
+          <div class="about-card">
+            <h3>PERFORMANCE</h3>
+            <p>The core classifier evaluates syntactic and semantic feature matrices, delivering an overall test accuracy of <strong>95.9%</strong>.</p>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 
   <footer>
-    <span>TURBIT TRUTH ENGINE</span>
-    <span>BUILT WITH FASTAPI + SKLEARN</span>
-    <span>© 2024</span>
+    <span>TRUTH ENGINE</span>
+    <span>FASTAPI + SKLEARN</span>
+    <span>© 2026</span>
   </footer>
 
   <div id="loader" class="loader hidden">
     <div class="loader-inner">
       <div class="loader-bar"></div>
-      <p>SCANNING ARTICLE<span class="dots">...</span></p>
+      <p>ANALYZING CONTENT<span class="dots">...</span></p>
     </div>
   </div>
 
