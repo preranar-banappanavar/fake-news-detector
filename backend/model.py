@@ -233,13 +233,25 @@ def predict(text: str) -> dict:
 
     Returns:
         {
-          "label":      "REAL" | "FAKE",
+          "label":      "REAL" | "FAKE" | "UNRECOGNIZED",
           "confidence": float (0-100),
-          "conf_label": "High" | "Medium" | "Low",
+          "conf_label": "High" | "Medium" | "Low" | "None",
           "fake_prob":  float,
           "real_prob":  float,
         }
     """
+    # Check if the input has any recognizable vocabulary terms
+    vectorizer = _model.named_steps["tfidf"]
+    transformed = vectorizer.transform([text])
+    if transformed.nnz == 0:
+        return {
+            "label":      "UNRECOGNIZED",
+            "confidence": 0.0,
+            "conf_label": "None",
+            "fake_prob":  0.0,
+            "real_prob":  0.0,
+        }
+
     proba = _model.predict_proba([text])[0]   # [P(fake), P(real)]
     label = int(_model.predict([text])[0])    # 0 = fake, 1 = real
 
