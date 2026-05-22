@@ -229,6 +229,11 @@
     border-color: var(--green);
     box-shadow: 0 0 30px rgba(0,232,122,.15), inset 0 0 30px rgba(0,232,122,.04);
   }
+
+  .verdict-card.is-unrecognized {
+    border-color: var(--accent);
+    box-shadow: 0 0 30px rgba(255,255,0,.15), inset 0 0 30px rgba(255,255,0,.04);
+  }
   
   .verdict-header {
     display: flex;

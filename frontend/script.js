@@ -50,29 +50,44 @@ function renderResult(data) {
   const realVal    = document.getElementById("realVal");
 
   const isFake = data.label === "FAKE";
+  const isUnrecognized = data.label === "UNRECOGNIZED";
 
   // Card styling
-  card.classList.remove("is-fake", "is-real");
-  card.classList.add(isFake ? "is-fake" : "is-real");
+  card.classList.remove("is-fake", "is-real", "is-unrecognized");
+  if (isUnrecognized) {
+    card.classList.add("is-unrecognized");
+  } else {
+    card.classList.add(isFake ? "is-fake" : "is-real");
+  }
 
   // Icon & label
-  icon.textContent  = isFake ? "🚨" : "✅";
-  label.textContent = data.label;
-  conf.textContent  = `Confidence: ${data.confidence}% (${data.conf_label})`;
+  if (isUnrecognized) {
+    icon.textContent  = "❓";
+    label.textContent = "UNKNOWN";
+    conf.textContent  = "No recognizable English vocabulary detected.";
+  } else {
+    icon.textContent  = isFake ? "🚨" : "✅";
+    label.textContent = data.label;
+    conf.textContent  = `Confidence: ${data.confidence}% (${data.conf_label})`;
+  }
 
   // Bars — reset then animate after a frame
   fakeFill.style.width = "0%";
   realFill.style.width = "0%";
 
-  requestAnimationFrame(() => {
+  if (isUnrecognized) {
+    fakeVal.textContent = "—";
+    realVal.textContent = "—";
+  } else {
     requestAnimationFrame(() => {
-      fakeFill.style.width = `${data.fake_prob}%`;
-      realFill.style.width = `${data.real_prob}%`;
+      requestAnimationFrame(() => {
+        fakeFill.style.width = `${data.fake_prob}%`;
+        realFill.style.width = `${data.real_prob}%`;
+      });
     });
-  });
-
-  fakeVal.textContent = `${data.fake_prob}%`;
-  realVal.textContent = `${data.real_prob}%`;
+    fakeVal.textContent = `${data.fake_prob}%`;
+    realVal.textContent = `${data.real_prob}%`;
+  }
 
   // Dynamic Full Coverage Search Link
   const coverageSection = document.getElementById("coverageSection");
@@ -80,23 +95,27 @@ function renderResult(data) {
   const coverageLink    = document.getElementById("coverageLink");
 
   if (coverageSection && coverageInfo && coverageLink) {
-    const textQuery = textarea.value.trim();
-    // Use first sentence or up to 10 words
-    let query = textQuery.split(/[.!?]/)[0].trim();
-    if (query.split(/\s+/).length > 10) {
-      query = query.split(/\s+/).slice(0, 10).join(" ");
-    }
-    const searchUrl = `https://news.google.com/search?q=${encodeURIComponent(query)}`;
-    coverageLink.href = searchUrl;
-
-    if (isFake) {
-      coverageInfo.innerHTML = `This statement matches patterns of misinformation. Search for verified reports and debunking coverage on Google News.`;
-      coverageLink.textContent = "SEARCH RELATED COVERAGE →";
+    if (isUnrecognized) {
+      coverageSection.classList.add("hidden");
     } else {
-      coverageInfo.innerHTML = `This story shows credible structures. Read the complete articles and press coverage on Google News.`;
-      coverageLink.textContent = "READ COMPLETE NEWS →";
+      const textQuery = textarea.value.trim();
+      // Use first sentence or up to 10 words
+      let query = textQuery.split(/[.!?]/)[0].trim();
+      if (query.split(/\s+/).length > 10) {
+        query = query.split(/\s+/).slice(0, 10).join(" ");
+      }
+      const searchUrl = `https://news.google.com/search?q=${encodeURIComponent(query)}`;
+      coverageLink.href = searchUrl;
+
+      if (isFake) {
+        coverageInfo.innerHTML = `This statement matches patterns of misinformation. Search for verified reports and debunking coverage on Google News.`;
+        coverageLink.textContent = "SEARCH RELATED COVERAGE →";
+      } else {
+        coverageInfo.innerHTML = `This story shows credible structures. Read the complete articles and press coverage on Google News.`;
+        coverageLink.textContent = "READ COMPLETE NEWS →";
+      }
+      coverageSection.classList.remove("hidden");
     }
-    coverageSection.classList.remove("hidden");
   }
 
   // Scroll result into view on mobile
@@ -109,7 +128,7 @@ function clearAll() {
   charCount.textContent  = "0";
 
   const card  = document.getElementById("verdictCard");
-  card.classList.remove("is-fake", "is-real");
+  card.classList.remove("is-fake", "is-real", "is-unrecognized");
 
   document.getElementById("verdictIcon").textContent  = "";
   document.getElementById("verdictLabel").textContent = "—";
