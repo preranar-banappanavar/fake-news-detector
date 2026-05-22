@@ -25,65 +25,111 @@
         SEPARATING FACT FROM FICTION &nbsp;·&nbsp; POWERED BY MACHINE LEARNING &nbsp;·&nbsp;
       </div>
     </div>
+    <nav class="nav-tabs">
+      <button class="tab-link active" onclick="switchTab('home')">HOME</button>
+      <button class="tab-link" onclick="switchTab('news')">LATEST NEWS</button>
+      <button class="tab-link" onclick="switchTab('about')">ABOUT</button>
+    </nav>
   </header>
 
   <main>
-    <section class="input-section">
-      <div class="section-label">// INPUT ARTICLE OR HEADLINE</div>
-      <div class="textarea-wrap">
-        <textarea id="newsText" placeholder="Paste a news headline or article text here…" rows="7"></textarea>
-        <div class="char-count"><span id="charCount">0</span> characters</div>
-      </div>
-      <div class="actions">
-        <button id="analyzeBtn" onclick="analyzeNews()">
-          <span class="btn-label">ANALYZE</span>
-          <span class="btn-arrow">→</span>
-        </button>
-        <button id="clearBtn" onclick="clearAll()">CLEAR</button>
-      </div>
-    </section>
-
-    <section class="result-section" id="resultSection">
-      <div class="section-label">// ANALYSIS RESULT</div>
-
-      <div class="verdict-card" id="verdictCard">
-        <div class="verdict-header">
-          <span class="verdict-icon" id="verdictIcon"></span>
-          <span class="verdict-label" id="verdictLabel">—</span>
+    <!-- Home Tab View -->
+    <div id="homeView" class="tab-view active">
+      <section class="input-section">
+        <div class="section-label">// WHAT'S YOUR NEWS?</div>
+        <div class="textarea-wrap">
+          <textarea id="newsText" placeholder="Paste a news headline or article text here to scan for credibility…" rows="7"></textarea>
+          <div class="char-count"><span id="charCount">0</span> characters</div>
         </div>
-        <div class="verdict-confidence" id="verdictConf">—</div>
-      </div>
+        <div class="actions">
+          <button id="analyzeBtn" onclick="analyzeNews()">
+            <span class="btn-label">ANALYZE</span>
+            <span class="btn-arrow">→</span>
+          </button>
+          <button id="clearBtn" onclick="clearAll()">CLEAR</button>
+        </div>
+      </section>
+    </div>
 
-      <div class="meter-block">
-        <div class="meter-row">
-          <span class="meter-tag">FAKE</span>
-          <div class="meter-bar">
-            <div class="meter-fill fake-fill" id="fakeFill"></div>
+    <!-- Results View (Scanner Page) -->
+    <div id="resultView" class="tab-view hidden">
+      <section class="result-section" id="resultSection">
+        <div class="section-label">// ANALYSIS RESULT</div>
+  
+        <div class="verdict-card" id="verdictCard">
+          <div class="verdict-header">
+            <span class="verdict-icon" id="verdictIcon"></span>
+            <span class="verdict-label" id="verdictLabel">—</span>
           </div>
-          <span class="meter-val" id="fakeVal">—</span>
+          <div class="verdict-confidence" id="verdictConf">—</div>
         </div>
-        <div class="meter-row">
-          <span class="meter-tag">REAL</span>
-          <div class="meter-bar">
-            <div class="meter-fill real-fill" id="realFill"></div>
+  
+        <div class="meter-block">
+          <div class="meter-row">
+            <span class="meter-tag">FAKE</span>
+            <div class="meter-bar">
+              <div class="meter-fill fake-fill" id="fakeFill"></div>
+            </div>
+            <span class="meter-val" id="fakeVal">—</span>
           </div>
-          <span class="meter-val" id="realVal">—</span>
+          <div class="meter-row">
+            <span class="meter-tag">REAL</span>
+            <div class="meter-bar">
+              <div class="meter-fill real-fill" id="realFill"></div>
+            </div>
+            <span class="meter-val" id="realVal">—</span>
+          </div>
         </div>
-      </div>
-      
-      <div class="coverage-section hidden" id="coverageSection">
-        <div class="section-label">// FULL COVERAGE</div>
-        <div class="coverage-card">
-          <p id="coverageInfo">Read full coverage and verify references on official wire feeds.</p>
-          <a id="coverageLink" href="#" target="_blank" class="coverage-btn">READ COMPLETE NEWS →</a>
+        
+        <div class="coverage-section hidden" id="coverageSection">
+          <div class="section-label">// FULL COVERAGE</div>
+          <div class="coverage-card">
+            <p id="coverageInfo">Read full coverage and verify references on official wire feeds.</p>
+            <a id="coverageLink" href="#" target="_blank" class="coverage-btn">READ COMPLETE NEWS →</a>
+          </div>
         </div>
-      </div>
 
-      <div class="disclaimer">
-        ⚠ This tool uses a lightweight ML model for demonstration. Always verify news with
-        trusted primary sources and apply your own critical thinking.
-      </div>
-    </section>
+        <div class="actions" style="margin-top: 1.5rem;">
+          <button id="backBtn" onclick="backToHome()">← SCAN ANOTHER ARTICLE</button>
+        </div>
+  
+        <div class="disclaimer">
+          ⚠ This tool uses a lightweight ML model for demonstration. Always verify news with
+          trusted primary sources and apply your own critical thinking.
+        </div>
+      </section>
+    </div>
+
+    <!-- Latest News Tab View -->
+    <div id="newsView" class="tab-view hidden">
+      <section class="news-feed-section">
+        <div class="section-label">// LATEST WIRE REPORTS</div>
+        <div class="news-grid" id="newsGrid">
+          <!-- Dynamic news cards populated by JS -->
+        </div>
+      </section>
+    </div>
+
+    <!-- About Tab View -->
+    <div id="aboutView" class="tab-view hidden">
+      <section class="about-section">
+        <div class="section-label">// SYSTEM INFORMATION</div>
+        <div class="about-grid">
+          <div class="about-card">
+            <h3>ABOUT TURBIT</h3>
+            <p>Turbit is an AI-powered Truth Engine designed to identify misinformation patterns in news headlines and article bodies.</p>
+          </div>
+          <div class="about-card">
+            <h3>TECHNICAL DETAILS</h3>
+            <p>Built with a FastAPI backend and a Scikit-Learn pipeline (TF-IDF vectorizer + Logistic Regression classifier) trained on a 20,000 subset of the WELFake dataset.</p>
+          </div>
+          <div class="about-card">
+            <h3>ACCURACY</h3>
+            <p>Our optimized lightweight model achieves a test set accuracy of <strong>95.9%</strong>, ensuring highly reliable predictive confidence ratings.</p>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 
   <footer>
