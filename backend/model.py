@@ -79,7 +79,9 @@ def _load_welfake(path: Path) -> pd.DataFrame:
     log.info(f"Loading WELFake from {path}")
     df = pd.read_csv(path, low_memory=False)
     df = df.dropna(subset=["label"])
-    df["label"] = df["label"].astype(int)
+    # Invert labels because in this WELFake CSV, 0 = Real and 1 = Fake,
+    # but the model pipeline expects 0 = Fake and 1 = Real.
+    df["label"] = 1 - df["label"].astype(int)
 
     # Combine title + text for richer features
     title = df["title"].fillna("")
@@ -154,7 +156,7 @@ def _get_dataframe() -> pd.DataFrame:
 def _build_pipeline() -> Pipeline:
     return Pipeline([
         ("tfidf", TfidfVectorizer(
-            max_features=100_000,
+            max_features=10_000,
             ngram_range=(1, 2),
             sublinear_tf=True,
             min_df=2,
@@ -221,7 +223,7 @@ def load_model() -> Pipeline:
 
 
 # ── Inference ───────────────────────────────────────────────────────────────
-# Loaded once at import time for fast API responses
+# Loaded once at import time for fast API responses - v2.2
 _model: Pipeline = load_model()
 
 
