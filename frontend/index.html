@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Truth Engine — Minimalist News Verification</title>
+  <title>TRUBIT — Minimalist News Verification</title>
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet"/>
 </head>
@@ -11,11 +11,11 @@
 
   <header>
     <div class="masthead">
-      <h1 class="masthead-title">TRUTH ENGINE</h1>
+      <h1 class="masthead-title">TRUBIT</h1>
     </div>
     <nav class="nav-tabs">
       <button class="tab-link active" onclick="switchTab('home')">HOME</button>
-      <button class="tab-link" onclick="switchTab('news')">LATEST NEWS</button>
+      <button class="tab-link" onclick="switchTab('signup')">SIGN UP</button>
       <button class="tab-link" onclick="switchTab('about')">ABOUT</button>
     </nav>
   </header>
@@ -34,6 +34,13 @@
             <span class="btn-arrow">→</span>
           </button>
           <button id="clearBtn" onclick="clearAll()">CLEAR</button>
+        </div>
+      </section>
+
+      <section class="trending-section">
+        <h2 class="trending-title">TRENDING REPORTS</h2>
+        <div class="news-grid" id="newsGrid">
+          <!-- Dynamic news cards populated by JS -->
         </div>
       </section>
     </div>
@@ -83,11 +90,26 @@
       </section>
     </div>
 
-    <!-- Latest News Tab View -->
-    <div id="newsView" class="tab-view hidden">
-      <section class="news-feed-section">
-        <div class="news-grid" id="newsGrid">
-          <!-- Dynamic news cards populated by JS -->
+    <!-- Sign Up Tab View -->
+    <div id="signupView" class="tab-view hidden">
+      <section class="signup-section">
+        <div class="signup-card">
+          <h2>CREATE ACCOUNT</h2>
+          <form id="signupForm" onsubmit="event.preventDefault(); alert('Account created successfully!');">
+            <div class="form-group">
+              <label for="signupEmail">Email Address</label>
+              <input type="email" id="signupEmail" placeholder="name@domain.com" required />
+            </div>
+            <div class="form-group">
+              <label for="signupPassword">Password</label>
+              <input type="password" id="signupPassword" placeholder="••••••••" required />
+            </div>
+            <div class="form-group">
+              <label for="signupConfirm">Confirm Password</label>
+              <input type="password" id="signupConfirm" placeholder="••••••••" required />
+            </div>
+            <button type="submit" id="signupBtn">SIGN UP</button>
+          </form>
         </div>
       </section>
     </div>
@@ -98,7 +120,7 @@
         <div class="about-grid">
           <div class="about-card">
             <h3>ABOUT</h3>
-            <p>Truth Engine is an AI-powered platform designed to analyze news headlines and article bodies, identifying subtle patterns of misinformation using custom machine learning algorithms.</p>
+            <p>Trubit is an AI-powered platform designed to analyze news headlines and article bodies, identifying subtle patterns of misinformation using custom machine learning algorithms.</p>
           </div>
           <div class="about-card">
             <h3>TECHNOLOGY</h3>
@@ -114,7 +136,7 @@
   </main>
 
   <footer>
-    <span>TRUTH ENGINE</span>
+    <span>TRUBIT</span>
     <span>FASTAPI + SKLEARN</span>
     <span>© 2026</span>
   </footer>

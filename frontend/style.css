@@ -565,6 +565,102 @@ footer {
 .dots { animation: blink 1.2s step-start infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
+/* ── Trending Section ──────────────────────────────────────── */
+.trending-section {
+  margin-top: 5rem;
+  width: 100%;
+}
+
+.trending-title {
+  font-family: var(--font-head);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.75rem;
+}
+
+/* ── Sign Up Page ──────────────────────────────────────────── */
+.signup-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 0;
+}
+
+.signup-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3rem 2.5rem;
+  max-width: 440px;
+  width: 100%;
+}
+
+.signup-card h2 {
+  font-family: var(--font-head);
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 2.25rem;
+  color: var(--text);
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-family: var(--font-head);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.form-group input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  padding: 0.5rem 0;
+  outline: none;
+  transition: border-color 0.25s ease;
+}
+
+.form-group input:focus {
+  border-color: var(--blue);
+}
+
+#signupBtn {
+  background: var(--blue);
+  color: #ffffff;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+#signupBtn:hover {
+  background: #0082ff;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(0, 122, 255, 0.25);
+}
+
+#signupBtn:active {
+  transform: translateY(0);
+}
+
 /* ── Animations ───────────────────────────────────────────── */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(15px); }

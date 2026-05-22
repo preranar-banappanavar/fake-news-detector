@@ -203,11 +203,6 @@ function switchTab(tabId) {
   // Activate clicked tab link
   const activeLink = document.querySelector(`.tab-link[onclick="switchTab('${tabId}')"]`);
   if (activeLink) activeLink.classList.add("active");
-  
-  // Populate Latest News if active
-  if (tabId === "news") {
-    populateLatestNews();
-  }
 }
 
 function populateLatestNews() {
@@ -225,7 +220,7 @@ function populateLatestNews() {
         <div class="news-card-tag">// ${item.category}</div>
         <h3 class="news-card-title">${item.title}</h3>
       </div>
-      <div class="news-card-action">SEND TO SCANNER →</div>
+      <div class="news-card-action">ANALYZE →</div>
     `;
     grid.appendChild(card);
   });
@@ -243,6 +238,9 @@ function backToHome() {
   document.getElementById("homeView").classList.remove("hidden");
   clearAll();
 }
+
+// Initialise news feed on page load
+populateLatestNews();
 
 // ── Loader ───────────────────────────────────────────────────
 function showLoader(show) {
